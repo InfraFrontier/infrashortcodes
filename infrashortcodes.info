@@ -1,0 +1,7 @@
+name = Shortcodes Infrafrontier
+description = Some shortcodes for Infrafrontier, e.g. providing boxes and toggling effects
+package = Infrafrontier
+core = 7.x
+dependencies[] = filter
+dependencies[] = shortcode
+version = "1.0"

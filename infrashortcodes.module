@@ -1,0 +1,82 @@
+<?php
+/**
+ * Implements hook_shortcode_info()
+ * @return void
+ */
+function infrashortcodes_shortcode_info() {
+  $shortcodes['box'] = array(
+    'title' => t('Box'),
+    'description' => t('Inserts a box.'),
+    'process callback' => 'infrashortcodes_box_process',
+    'tips callback' => 'infrashortcodes_box_tip',
+  );
+  $shortcodes['toggle'] = array(
+    'title' => t('Togglebox'),
+    'description' => t('Inserts a togglebox.'),
+    'process callback' => 'infrashortcodes_togglebox_process',
+    'tips callback' => 'infrashortcodes_togglebox_tip',
+  );
+  return $shortcodes;
+}
+
+
+/**
+ * Implementation of hook_theme().
+ */
+function infrashortcodes_theme() {
+  return array(
+	'infrashortcodes_box' => array(
+      'variables' => array('text' => '')
+    ),
+	'infrashortcodes_toggle' => array(
+      'variables' => array('text' => '', 'title' => '')
+    )
+  );
+}
+
+
+/**
+ * Inserts a box (div)
+ *
+ * Calling
+ * [box]text[/box]
+ *
+ */
+function infrashortcodes_box_process($attrs, $text) {
+  return '<div class="innerbox">'.$text.'</div>';
+}
+
+/**
+ * Inserts a Togglebox (div)
+ *
+ * Calling
+ * [toggle]text[/toggle]
+ *
+ */
+function infrashortcodes_togglebox_process($attrs, $text) {
+	$attrs = shortcode_attrs(array('title' => 'Default Title'),$attrs);
+    //$title = shortcode_add_class($attrs['title'], 'title');
+	return '<div class="toggle"><div class="togglehead"><div class="helper"></div>'.$attrs['title'].'</div><div class="togglecontent">'.$text.'</div></div>';
+}
+
+
+
+
+/**
+ * Toggle Tips for the WYSIWYG editor
+ *
+ */
+
+function infrashortcodes_box_tip($format, $long) {
+  $output = array();
+  $output[] = '<p>'.t('[box]text[/box]').'';
+  $output[] = t('Inserts a white box around the content. (not to be used inside tabs)').'</p>';
+  return implode(' ', $output);
+}
+
+function infrashortcodes_togglebox_tip($format, $long) {
+  $output = array();
+  $output[] = '<p>'.t('[toggle title="Title for togglebox"]text[/toggle]').'';
+  $output[] = t('Inserts a toggle box around the content. (to be used inside tabs)').'</p>';
+  return implode(' ', $output);
+}
